@@ -3,9 +3,10 @@ package linked;
 /**
  * @Author yukai
  * @Date 2018年11月7日
+ * 静态链表
  * 顺序存储链表（物理地址是连续的）
  */
-public class ArrayLinked<T> {
+public class ArrayLinkedList<T> {
 	/**
 	 * 存储元素
 	 */
@@ -16,12 +17,12 @@ public class ArrayLinked<T> {
 	private int size;
 	
 	
-	public ArrayLinked(int capacity){
+	public ArrayLinkedList(int capacity){
 		data = (T[]) new Object[capacity];
 		size = 0;
 	}
 	
-	public ArrayLinked(){
+	public ArrayLinkedList(){
 		this(10);
 	}
 	
