@@ -127,4 +127,24 @@ public class CharString {
 			return i-newChar.length();
 		return -1;
 	} 
+	
+	
+	private void getNext(String str,int[] next){
+		//前一个字符
+		int i=0;
+		//后一个字符
+		int j=1;
+		next[1] = 0;
+		while(j<str.length()){
+			if(i==0 || str.charAt(i)==str.charAt(j)){
+				++i;
+				++j;
+				next[j] = i;
+			}else
+				//j值回溯
+				j = next[j];
+				
+		}
+		
+	}
 }
