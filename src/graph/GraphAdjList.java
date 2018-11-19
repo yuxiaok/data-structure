@@ -68,4 +68,29 @@ public class GraphAdjList {
 			size++;
 		}
 	}
+	
+	/**
+	 * 邻接表的深度优先遍历
+	 */
+	public void DFSTraverse(){
+		boolean[] visited = new boolean[nodes.length];
+		for(int i=0;i<visited.length;i++)
+			visited[i] = false;
+		
+		for(int i=0;i<visited.length;i++)
+			DFS(visited,nodes[i],i);
+	}
+	
+	private void DFS(boolean[] visited,EdgeNode node,int index){
+		visited[index] = true;
+		System.out.println(nodes[index].data);
+		
+		EdgeNode cur = node.next;
+		while(cur!=null){
+			if(!visited[cur.index])
+				DFS(visited,cur,cur.index);
+			else
+				cur = cur.next;
+		}
+	}
 }
