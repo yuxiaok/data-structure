@@ -169,6 +169,8 @@ public class MGraph<T> {
 			}
 		}
 	}
+	
+	
 	public static void main(String[] args) {
 		MGraph<Integer> m = new MGraph<>(100);
 		for (int i = 0; i < 100; i++) {
