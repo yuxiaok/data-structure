@@ -1,138 +1,185 @@
 package graph;
 
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Random;
 import java.util.Stack;
 
 /**
  * @Author yukai
- * @Date 2018年11月18日
- * 邻接矩阵实现无向图
- * 创建图的时间复杂度为O(n2)
+ * @Date 2018年11月18日 邻接矩阵实现无向图 创建图的时间复杂度为O(n2)
  */
 public class MGraph<T> {
 
-	//用于存储顶点
+	// 用于存储顶点
 	private T[] vertex;
-	//用于存储边(两个顶点的值为true)
+	// 用于存储边(两个顶点的值为true)
 	private boolean[][] edge;
-	//顶点的数目
+	// 顶点的数目
 	private int size;
-	//边的数目
+	// 边的数目
 	private int num;
-	
-	public MGraph(int capacity){
+
+	public MGraph(int capacity) {
 		vertex = (T[]) new Object[capacity];
-		//如果边比较少，就会浪费很多存储空间
+		// 如果边比较少，就会浪费很多存储空间
 		edge = new boolean[capacity][capacity];
-		for(int i=0;i<capacity;i++)
-			for(int j=0;j<capacity;j++)
+		for (int i = 0; i < capacity; i++)
+			for (int j = 0; j < capacity; j++)
 				edge[i][j] = false;
 		size = 0;
 		num = 0;
 	}
-	
-	public MGraph(){
+
+	public MGraph() {
 		this(10);
 	}
-	
+
 	/**
 	 * 添加一个顶点
-	* @param element
+	 * 
+	 * @param element
 	 */
-	public void add(T element){
+	public void add(T element) {
 		vertex[size] = element;
 		size++;
 	}
-	
-	
-	private int getIndex(T e){
-		for(int i=0;i<size;i++){
-			if(vertex[i].equals(e))
+
+	private int getIndex(T e) {
+		for (int i = 0; i < size; i++) {
+			if (vertex[i].equals(e))
 				return i;
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * 连接两个顶点
-	* @param e1
-	* @param e2
+	 * 
+	 * @param e1
+	 * @param e2
 	 */
-	public void connection(T e1,T e2){
-		int index1=getIndex(e1);
-		
-		int index2=getIndex(e2);
-		if(index1 != -1 && index2 != -1){
+	public void connection(T e1, T e2) {
+		int index1 = getIndex(e1);
+
+		int index2 = getIndex(e2);
+		if (index1 != -1 && index2 != -1) {
 			edge[index1][index2] = true;
 			edge[index2][index1] = true;
 			num++;
-		}	
+		}
 	}
-	
+
 	/**
-	 * 深度优先遍历
-	 * 相当于每次都找一个顶点开始，将这个顶点选择的一条路径上没有访问过的顶点全部访问，然后再从另一个顶点开始，知道所有的都被访问过
+	 * 深度优先遍历 相当于每次都找一个顶点开始，将这个顶点选择的一条路径上没有访问过的顶点全部访问，然后再从另一个顶点开始，知道所有的都被访问过
 	 */
-	public void DFSTraverse(){	
-		//使用一个数组默认记录是否访问过，初始都没访问过，此下标与顶点数组的顶点下标一致
+	public void DFSTraverse() {
+		// 使用一个数组默认记录是否访问过，初始都没访问过，此下标与顶点数组的顶点下标一致
 		boolean[] visited = new boolean[vertex.length];
-		for(int i=0;i<vertex.length;i++){
+		for (int i = 0; i < vertex.length; i++) {
 			visited[i] = false;
 		}
-		
-		//随便选取一个顶点开始遍历，这一步主要是针对有连通分量的，连通图只需要递归的部分即可
-		for(int i=0;i<vertex.length;i++){
-			if(!visited[i])
-				DFS(visited,i);
+
+		// 随便选取一个顶点开始遍历，这一步主要是针对有连通分量的，连通图只需要递归的部分即可
+		for (int i = 0; i < vertex.length; i++) {
+			if (!visited[i])
+				DFS(visited, i);
 		}
 	}
-	
+
 	/**
-	 * 图的深度优先遍历相当于树的前序遍历
-	 * 递归实现
-	* @param visited
-	* @param index
+	 * 图的深度优先遍历相当于树的前序遍历 递归实现
+	 * 
+	 * @param visited
+	 * @param index
 	 */
-	private void DFS(boolean[] visited,int index){
-		//设置顶点访问过了
+	private void DFS(boolean[] visited, int index) {
+		// 设置顶点访问过了
 		visited[index] = true;
-		//输出该顶点
+		// 输出该顶点
 		System.out.println(vertex[index]);
-		//递归访问该顶点的邻接点
-		for(int i=0;i<visited.length;i++)
-			if(edge[index][i]==true && !visited[i])
-				DFS(visited,i);
+		// 递归访问该顶点的邻接点
+		for (int i = 0; i < visited.length; i++)
+			if (edge[index][i] == true && !visited[i])
+				DFS(visited, i);
 	}
-	
+
 	/**
-	 * 非递归实现
-	 */
-	public void DFS2(){
-		//标识是否访问过
+	 * 我也不知道这个是啥遍历了，自己写的，感觉像广度优先遍历
+	 *//*
+	public void DFS2() {
+		// 标识是否访问过
 		boolean[] visited = new boolean[vertex.length];
-		for(int i=0;i<visited.length;i++)
+		for (int i = 0; i < visited.length; i++)
 			visited[i] = false;
-			
+
 		Stack<Integer> stack = new Stack();
-		/*//针对有连通分量的
-		for(int i=0;i<visited.length;i++)
-			if(!visited[i])
-				stack.push(i);*/
-		//压入第一个顶点，默认访问
-		stack.push(0);
-		visited[0] = true;
-		while(!stack.isEmpty()){
-			int i=stack.pop();
-			System.out.println(vertex[i]);
-			
-			//找到弹出元素的邻接点，并压入栈，压入就设置为访问过
-			for(int j=0;j<visited.length;j++){
-				if(edge[i][j]==true && !visited[j]){
-					stack.push(j);
-					visited[j] = true;
+		// 针对有连通分量的
+		for (int i = 0; i < visited.length; i++) {
+			if (!visited[i]) {
+				stack.push(i);
+				while (!stack.isEmpty()) {
+					int k = stack.pop();
+					System.out.println(vertex[k]);
+
+					// 找到弹出元素的邻接点，并压入栈，压入就设置为访问过
+					for (int j = 0; j < visited.length; j++) {
+						if (edge[k][j] == true && !visited[j]) {
+							stack.push(j);
+							visited[j] = true;
+						}
+
+					}
 				}
-					
 			}
 		}
 	}
-	
+*/
+	/**
+	 * 广度优先遍历
+	 * 类似于树的层次遍历
+	 */
+	public void BFSTraverse(){
+		boolean[] visited = new boolean[vertex.length];
+		for(int i=0;i<visited.length;i++)
+			visited[i] = false;
+		
+		Queue<Integer> queue = new LinkedList<>();
+		//针对有连通分量
+		for(int i=0;i<vertex.length;i++){
+			if(!visited[i]){
+				visited[i] = true;
+				System.err.println(vertex[i]);
+				
+				queue.add(i);
+				
+				while(!queue.isEmpty()){
+					queue.poll();
+					
+					for(int j=0;j<vertex.length;j++){
+						if(edge[i][j]==true && !visited[j]){
+							visited[j] = true;
+							System.err.println(vertex[j]);
+							
+							queue.add(j);
+						}
+					}
+						
+				}
+			}
+		}
+	}
+	public static void main(String[] args) {
+		MGraph<Integer> m = new MGraph<>(100);
+		for (int i = 0; i < 100; i++) {
+			m.add(i);
+		}
+
+		Random r = new Random();
+		for (int i = 0; i < 20; i++) {
+			m.connection(r.nextInt(49) + 50, r.nextInt(49));
+		}
+
+		m.DFSTraverse();
+	}
 }

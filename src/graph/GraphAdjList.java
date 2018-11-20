@@ -1,5 +1,8 @@
 package graph;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * @Author yukai
  * @Date 2018年11月18日
@@ -91,6 +94,36 @@ public class GraphAdjList {
 				DFS(visited,cur,cur.index);
 			else
 				cur = cur.next;
+		}
+	}
+	
+	/**
+	 * 广度优先遍历
+	 */
+	public void BFSTraverse(){
+		boolean[] visited = new boolean[nodes.length];
+		for(int i=0;i<visited.length;i++)
+			visited[i] = false;
+		
+		Queue<Integer> queue = new LinkedList<>();
+		
+		for(int i=0;i<visited.length;i++){
+			if(!visited[i]){
+				visited[i] = true;
+				System.out.println(nodes[i].data);
+				
+				queue.add(i);
+				
+				while(!queue.isEmpty()){
+					EdgeNode cur = nodes[i].next;
+					if(!visited[cur.index]){
+						visited[cur.index]=true;
+						System.out.println(nodes[cur.index].data);
+						queue.add(cur.index);
+					}else
+						cur = cur.next;					
+				}
+			}
 		}
 	}
 }
