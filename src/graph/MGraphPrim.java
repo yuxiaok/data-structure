@@ -9,6 +9,7 @@ public class MGraphPrim {
 	private int[] vertex;
 	private int[][] edge;
 	private int size;
+	private int num;
 	//代表没有连接
 	private static final int MAX = 65533;
 	
@@ -20,6 +21,7 @@ public class MGraphPrim {
 				edge[i][j] = MAX;
 		
 		size = 0;
+		num = 0;
 	}
 	
 	public void add(int v){
@@ -30,10 +32,11 @@ public class MGraphPrim {
 	public void connection(int v1,int v2,int weight){
 		edge[v1][v2] = weight;
 		edge[v2][v1] = weight;
+		num++;
 	}
 	
 	/**
-	 * Prim算法对于稠密图有优势，也就是适用于邻接矩阵
+	 * Prim算法对于稠密图有优势，依赖于顶点
 	 */
 	public void prim(){
 		//保存顶点间的权值，用于记录最小生成树，等于0就纳入最小生成树了
@@ -81,6 +84,48 @@ public class MGraphPrim {
 		}
 	}
 	
+	private class Node{
+		private int begin;
+		private int end;
+		private int weight; 
+	}
+	
+	/**
+	 * kruskal针对于边
+	 * 将所有的边，用一个数组存储，按权值大小升序
+	 */
+	public void kruskal(){
+		//所有的边
+		Node[] nodes = new Node[num];
+		//记录加入最小生成树的顶点
+		int[] parent = new int[size];
+		for(int i=0;i<size;i++)
+			parent[i] = 0;
+		
+		//将邻接矩阵转为nodes数组，并按照权值升序排列，此处省略
+		
+		for(int i=0;i<nodes.length;i++){
+			//路径查找，如果路径的最后一个顶点和第一个顶点相同，说明形成环了
+			int n = Find(parent,nodes[i].begin);
+			int m = Find(parent,nodes[i].end);
+			//没有形成环
+			if(n!=m){
+				parent[n] = m;
+				System.out.println(nodes[i].begin+"----->"+nodes[i].end);
+			}
+		}
+	}
+	/**
+	 * 查找某个顶点是否已经加入生成树了
+	* @param parent
+	* @param index
+	* @return
+	 */
+	private int Find(int[] parent,int index){
+		while(parent[index]>0) 
+			index = parent[index];
+		return index;
+	}
 	
 	public static void main(String[] args){
 		MGraphPrim m = new MGraphPrim(4);
