@@ -127,6 +127,55 @@ public class MGraphPrim {
 		return index;
 	}
 	
+	/**
+	 * Dijkstra算法、
+	 * 最短路径
+	* @param v0 从某个顶点开始
+	 */
+	public void dijkstra(int v0){
+		//用于存储到某个顶点的最短路径长度
+		int[] d = new int[size];
+		
+		//用于存储最短路径p[i]表示前驱顶点的下标
+		int[] p = new int[size];
+		
+		//用于记录某个顶点是狗已经被纳入最短路径（0否，1是）
+		int[] f = new int[size];
+		
+		//初始化
+		for(int i=0;i<size;i++){
+			f[i] = 0;//所有顶点都没被纳入
+			d[i] = edge[v0][i];//纳入该顶点连接的顶点对应的权值
+			p[i] = 0;//表示没有路径
+		}
+		
+		//v0至v0路径为0
+		d[v0] = 0;
+		//v0已经纳入
+		f[v0] = 1;
+		
+		int min = MAX,k=-1;
+		//需要size-1条边，所以从1开始循环
+		for(int i=1;i<size;i++){
+			//寻找距离v0最近的顶点
+			for(int j=0;j<size;j++){
+				if(f[j] != 1 && d[j] < min){
+					k = j;
+					min = d[j];
+				}
+			}
+			
+			f[k] = 1;//纳入最短路径
+			for(int j=0;j<size;j++){
+				//如果经过i顶点的路径比现在这条路径的长度短
+				if(f[j] != 1 && min + edge[k][j] < d[j]){
+					//说明找到了更短的路径，修改
+					d[j] = min + edge[k][j];
+					p[j] = k;
+				}
+			}
+		}
+	}
 	public static void main(String[] args){
 		MGraphPrim m = new MGraphPrim(4);
 		for(int i=0;i<4;i++)
