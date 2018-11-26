@@ -146,7 +146,7 @@ public class MGraphPrim {
 		for(int i=0;i<size;i++){
 			f[i] = 0;//所有顶点都没被纳入
 			d[i] = edge[v0][i];//纳入该顶点连接的顶点对应的权值
-			p[i] = 0;//表示没有路径
+			p[i] = v0;//表示没有路径
 		}
 		
 		//v0至v0路径为0
@@ -176,6 +176,36 @@ public class MGraphPrim {
 			}
 		}
 	}
+	
+	public void floyd(){
+		//顶点间的权值
+		int[][] d = new int[size][size];
+		//列代表的是路径
+		int[][] p = new int[size][size];
+		
+		for(int i=0;i<size;i++){
+			for(int j=0;j<size;j++){
+				d[i][j] = edge[i][j];
+				p[i][j] = j;
+			}
+		}
+		
+		//中转顶点
+		for(int k=0;k<size;k++){
+			//起始顶点
+			for(int v = 0;v<size;v++){
+				//终点
+				for(int w=0;w<size;w++){
+					//如果通过中转点小于直达
+					if(d[v][w] > d[v][k] + d[k][w]){
+						d[v][w] = d[v][k] + d[k][w];
+						p[v][w] = p[v][k];
+					}
+				}
+			}
+		}
+	}
+	
 	public static void main(String[] args){
 		MGraphPrim m = new MGraphPrim(4);
 		for(int i=0;i<4;i++)
