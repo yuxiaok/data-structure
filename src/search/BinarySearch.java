@@ -20,6 +20,8 @@ public class BinarySearch {
 		int mid;
 		while(low <= high){
 			mid = low + (high-low)/2;
+			//算法改进，插值查找（公式）,将二分之一换掉，目的是找到更接近于该key的范围
+			//mid = low + ((key-arr[low])/(arr[high]-arr[low]))*(high-low);
 			if(arr[mid]==key)
 				return true;
 			else if(arr[mid]<key)
@@ -41,6 +43,8 @@ public class BinarySearch {
 	 */
 	public boolean binarySearch(int[] arr,int low,int high,int key){
 		int mid = low + (high - low) / 2;
+		//算法改进，插值查找,将二分之一换掉，目的是找到更接近于该key的范围
+		//mid = low + ((key-arr[low])/(arr[high]-arr[low]))*(high-low);
 		if(arr[mid] == key)
 			return true;
 		else if(arr[mid] < key)
