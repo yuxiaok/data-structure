@@ -288,11 +288,12 @@ public class BinaryTree<T extends Comparable<T>> {
 		Stack<Node> stack = new Stack<Node>();
 		stack.push(node);
 		while(!stack.isEmpty()){
-			System.out.println(stack.pop().element);
-			if(node.right != null)
-				stack.push(node.right);
-			if(node.left != null)
-				stack.push(node.left);
+			Node retNode = stack.pop();
+			System.out.println(retNode.element);
+			if(retNode.right != null)
+				stack.push(retNode.right);
+			if(retNode.left != null)
+				stack.push(retNode.left);
 		}
 	}
 	
